@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../services/global.service';
 
 @Component({
   selector: 'app-layout',
-  template: `<app-header></app-header>
-             <router-outlet></router-outlet>
-             <app-footer></app-footer>`  
-  
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.css'],
 })
 export class LayoutComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  PageTitle;
+  constructor(private appService: GlobalService) { }
+  ngOnInit() {
+    this.appService.getPageTitle().subscribe(data => { this.PageTitle = data; });
   }
-
 }

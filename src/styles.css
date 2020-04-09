@@ -1,2 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~bootstrap/dist/css/bootstrap.css';
+/* @import '~bootstrap/dist/css/bootstrap.css'; */
+/* @import './assets/light/css/bootstrap.min.css';
+@import './assets/light/css/icons.css';
+@import './assets/light/css/metismenu.min.css';
+@import './assets/light/css/style.css'; */
+
+@import './assets/vendor/@fortawesome/fontawesome-free/css/brands.css';
+@import './assets/vendor/@fortawesome/fontawesome-free/css/regular.css';
+@import './assets/vendor/@fortawesome/fontawesome-free/css/solid.css';
+@import './assets/vendor/@fortawesome/fontawesome-free/css/fontawesome.css';
+@import './assets/vendor/simple-line-icons/css/simple-line-icons.css';
+@import './assets/vendor/animate.css/animate.css';
+@import './assets/vendor/whirl/dist/whirl.css';
+@import './assets/css/bootstrap.css';
+@import './assets/css/app.css';
+

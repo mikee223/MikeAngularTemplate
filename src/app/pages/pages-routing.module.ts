@@ -4,12 +4,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PagesComponent } from './pages.component';
 
 
-const routes: Routes = [  
+const routes: Routes = [
   {
-   path: '', component:PagesComponent,
+   path: '', component: PagesComponent,
    children: [
      {
-       path:'dashboard',component:DashboardComponent
+       path: 'dashboard', component: DashboardComponent
      }
    ]},
   { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },

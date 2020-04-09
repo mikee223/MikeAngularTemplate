@@ -6,7 +6,9 @@ import { AppComponent } from './main/app.component';
 import { LayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GlobalService } from './services/global.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,11 +16,13 @@ import { FooterComponent } from './layout/footer/footer.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [GlobalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
 
-export const AppLayoutComponent = [LayoutComponent,HeaderComponent,FooterComponent]
+export const AppLayoutComponent = [LayoutComponent, HeaderComponent, FooterComponent];
