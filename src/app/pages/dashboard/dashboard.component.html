@@ -3,3 +3,64 @@
 <ul *ngFor="let employee of employees">
     <li>{{employee.EmpID}} - {{employee.EmpName}}</li>
 </ul>
+
+
+<table class="table table-striped table-bordered table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Employee ID</th>
+            <th scope="col">Employee Name</th>            
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let employee of employees; index as i">
+            <td scope="row">{{ i + 1 }}</td>
+            <td>                
+                {{ employee.EmpID }}
+            </td>
+            <td>{{ employee.EmpName }}</td>            
+        </tr>
+    </tbody>
+</table>
+
+ 
+<form>
+    <div class="form-group form-inline">
+        Full text search: <input class="form-control ml-2" type="text" name="searchTerm"
+            [(ngModel)]="empService.searchTerm" />
+        <span class="ml-3" *ngIf="empService.loading$ | async">Loading...</span>
+    </div>
+
+    <table class="table table-striped table-bordered table-sm">99m  
+        <thead>
+            <tr>                
+                <th scope="col" sortable="empid" (sort)="onSort($event)">Employee ID</th>
+                <th scope="col" sortable="empname" (sort)="onSort($event)">Employee Name</th>                
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let employee of employee$ | async">                
+                <td>                    
+                    <ngb-highlight [result]="employee.EmpID" [term]="empService.searchTerm"></ngb-highlight>
+                </td>
+                <td>
+                    <ngb-highlight [result]="employee.EmpName" [term]="empService.searchTerm"></ngb-highlight>
+                </td>                
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="(total$ | async)!" [(page)]="empService.page" [pageSize]="empService.pageSize">
+        </ngb-pagination>
+
+        <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="empService.pageSize">
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+    </div>
+
+</form>

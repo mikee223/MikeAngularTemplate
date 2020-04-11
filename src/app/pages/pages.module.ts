@@ -6,6 +6,7 @@ import { PagesComponent } from './pages.component';
 import { AppLayoutComponent } from '../app.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     PagesRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ]
 })
 export class PagesModule { }
