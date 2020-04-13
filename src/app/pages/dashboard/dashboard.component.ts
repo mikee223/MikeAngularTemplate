@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren, AfterViewInit, HostListener, Directive, ViewChild, ElementRef } from '@angular/core';
 import { GlobalService } from 'src/app/services/global.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Observable } from 'rxjs';
 
 import { mEmployee } from '../../model/employee';
-import { NgbdSortableHeader,SortEvent } from '../../properties/table';
+import { NgbdSortableHeader,SortEvent } from '../../properties/table.directive';
+import { TestDirective } from '../../properties/test.directive';
 
 
 @Component({
@@ -12,7 +13,16 @@ import { NgbdSortableHeader,SortEvent } from '../../properties/table';
    templateUrl: './dashboard.component.html',
    styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+
+export class DashboardComponent implements OnInit, AfterViewInit {
+  
+  // @HostListener('click') onClick() {
+  //   console.log('hehe')
+  // }
+  
+  
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;  
+  // @ViewChild(TestDirective) test : TestDirective
 
   public PageTitle = 'Dashboard';
   public employees = [];
@@ -20,21 +30,27 @@ export class DashboardComponent implements OnInit {
 
   employee$: Observable<mEmployee[]>;
   total$: Observable<number>;
-   
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
+  
   constructor(public appService: GlobalService, public empService : EmployeeService) {
     this.appService.setPageTitle(this.PageTitle);
     this.employee$ = empService.table$;
     this.total$ = empService.total$;
   }
-  
-  
-  ngOnInit() :void {
-    this.empService.getEmployee().subscribe(data => this.employees = data,error => this.errorMsg = error);
-  }
 
-  onSort({ column, direction }: SortEvent) {
+  ngOnInit() :void {    
+    this.empService.getEmployee().subscribe(data => this.employees = data,error => this.errorMsg = error);        
+  }
+    
+  // @ViewChild(TestDirective, { static: false }) test: TestDirective;
+
+  ngAfterViewInit() {
+
+  }  
+
+  onSort({ column, direction }: SortEvent) {    
+    console.log(column)
+    console.log(direction)
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
@@ -45,4 +61,6 @@ export class DashboardComponent implements OnInit {
     this.empService.sortColumn = column;
     this.empService.sortDirection = direction;
   }
+
+  
 }

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, throwError, of, Subject } from 'rxjs';
 import { mEmployee } from '../model/employee';
 import { DecimalPipe } from '@angular/common';
 import { catchError, debounceTime, delay, switchMap, tap } from 'rxjs/operators';
-import { SortColumn, SortDirection } from '../properties/table';
+import { SortColumn, SortDirection } from '../properties/table.directive';
 
 interface SearchResult {
   table: mEmployee[];
@@ -20,8 +20,9 @@ interface Property {
 }
 
 const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+// private pipe: DecimalPipe
 
-function sort(employee: mEmployee[], column: SortColumn, direction: string): mEmployee[] {
+function sort(employee: mEmployee[], column: SortColumn, direction: string): mEmployee[] {      
   if (direction === '' || column === '') {
     return employee;
   } else {
@@ -32,14 +33,12 @@ function sort(employee: mEmployee[], column: SortColumn, direction: string): mEm
   }
 }
 
-function matches(employee: mEmployee, term: string, pipe: PipeTransform) {
-  return employee.EmpName.toLowerCase().includes(term.toLowerCase())
-    || pipe.transform(employee.EmpID).includes(term)
-    || pipe.transform(employee.Department).includes(term)
-    || pipe.transform(employee.Salary).includes(term);
+function matches(employee: mEmployee, term: string, pipe: PipeTransform) {  
+    return employee.EmpName.toLowerCase().includes(term.toLowerCase())  
+  || pipe.transform(employee.EmpID).includes(term);    
+    // || pipe.transform(employee.Department).includes(term)
+    // || pipe.transform(employee.Salary).includes(term);
 }
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -59,10 +58,9 @@ export class EmployeeService {
     sortColumn: '',
     sortDirection: ''
   };
-
-  private pipe: DecimalPipe
-  
-  constructor(private http: HttpClient) { 
+    
+  constructor(private http: HttpClient,private pipe: DecimalPipe) { 
+    // var pipe: DecimalPipe
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -79,11 +77,10 @@ export class EmployeeService {
 
   private apiURL: string = '';
 
-  getEmployee(): Observable<mEmployee[]> {    
+  getEmployee(): Observable<mEmployee[]> {
     this.apiURL = 'http://localhost:8080/users';    
     return this.http.get<mEmployee[]>(this.apiURL).pipe(catchError(this.errorHandler))
   }
-
 
   errorHandler(error: HttpErrorResponse) {
     console.log(error.message)
@@ -109,13 +106,15 @@ export class EmployeeService {
   }
 
   private _search(): Observable<SearchResult> {
+    // var pipe: PipeTransform    
+    
     this.getEmployee().subscribe(data => this.DataTable = data);
 
     const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._employee;
 
     // 1. sort
     let table = sort(this.DataTable, sortColumn, sortDirection);
-
+      
     // 2. filter
     table = table.filter(data => matches(data, searchTerm, this.pipe));
     const total = table.length;

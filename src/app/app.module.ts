@@ -10,19 +10,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GlobalService } from './services/global.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
-    AppComponent    
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     HttpClientModule,
-    FormsModule
+    FormsModule    
   ],
-  providers: [GlobalService],
+  providers: [GlobalService,DecimalPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
